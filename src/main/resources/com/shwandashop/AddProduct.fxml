@@ -10,7 +10,7 @@
     <children>
         <Label layoutX="680.0" layoutY="100.0" style="-fx-font-size: 32px;" text="Add Product" />
         <TextField fx:id="productName" layoutX="276.0" layoutY="287.0" prefHeight="63.0" prefWidth="1000.0" promptText="Product Name" />
-        <Button fx:id="addProductButton" layoutX="315.0" layoutY="645.0" prefHeight="77.0" prefWidth="927.0" text="Add Product">
+        <Button fx:id="addProductButton" layoutX="313.0" layoutY="748.0" prefHeight="77.0" prefWidth="927.0" text="Add Product">
          <font>
             <Font name="Droid Sans Fallback" size="35.0" />
          </font></Button>
@@ -22,5 +22,7 @@
                 <Font name="DejaVuMathTeXGyre-Regular" size="23.0" />
             </font>
         </Button>
+      <TextField fx:id="productId1" layoutX="274.0" layoutY="576.0" prefHeight="63.0" prefWidth="1000.0" promptText="Category" />
+      <TextField fx:id="productId11" layoutX="274.0" layoutY="661.0" prefHeight="63.0" prefWidth="1000.0" promptText="Color" />
     </children>
 </AnchorPane>
