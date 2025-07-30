@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" style="-fx-background-color: #efe7da;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/24.0.1" fx:controller="your.package.ControllerClass">
+    <children>
+        <Label layoutX="720.0" layoutY="30.0" style="-fx-font-size: 32px;" text="Create Order" />
+
+        <TableView fx:id="productTable" layoutX="100.0" layoutY="100.0" prefHeight="350.0" prefWidth="1400.0">
+            <columns>
+                <TableColumn fx:id="selectColumn" prefWidth="100.0" text="Select" />
+                <TableColumn fx:id="productIdColumn" prefWidth="150.0" text="Product ID" />
+                <TableColumn fx:id="nameColumn" prefWidth="350.0" text="Name" />
+                <TableColumn fx:id="priceColumn" prefWidth="150.0" text="Price" />
+                <TableColumn fx:id="discountColumn" prefWidth="150.0" text="Discount" />
+                <TableColumn fx:id="quantityColumn" prefWidth="120.0" text="Quantity" />
+            </columns>
+        </TableView>
+
+        <Label layoutX="1000.0" layoutY="470.0" style="-fx-font-size: 18px;" text="Total Price:" />
+        <Label fx:id="totalPriceLabel" layoutX="1120.0" layoutY="470.0" style="-fx-font-size: 18px;" text="$0.00" />
+
+        <Label layoutX="1000.0" layoutY="510.0" style="-fx-font-size: 18px;" text="Total with Discount:" />
+        <Label fx:id="totalDiscountLabel" layoutX="1200.0" layoutY="510.0" style="-fx-font-size: 18px;" text="$0.00" />
+
+        <TextField fx:id="customerNameField" layoutX="600.0" layoutY="600.0" prefWidth="400.0" promptText="Customer Name" />
+        <TextField fx:id="customerEmailField" layoutX="600.0" layoutY="650.0" prefWidth="400.0" promptText="Customer Email" />
+        <TextField fx:id="customerContactField" layoutX="600.0" layoutY="700.0" prefWidth="400.0" promptText="Contact Number" />
+
+        <Button fx:id="confirmOrderButton" layoutX="725.0" layoutY="780.0" prefWidth="150.0" text="Confirm Order" />
+    </children>
+</AnchorPane>
