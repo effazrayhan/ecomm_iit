@@ -22,7 +22,7 @@
                 <Font name="DejaVuMathTeXGyre-Regular" size="23.0" />
             </font>
         </Button>
-      <TextField fx:id="productId1" layoutX="274.0" layoutY="576.0" prefHeight="63.0" prefWidth="1000.0" promptText="Category" />
-      <TextField fx:id="productId11" layoutX="274.0" layoutY="661.0" prefHeight="63.0" prefWidth="1000.0" promptText="Color" />
+      <TextField fx:id="productCategory" layoutX="274.0" layoutY="576.0" prefHeight="63.0" prefWidth="1000.0" promptText="Category" />
+      <TextField fx:id="productColor" layoutX="274.0" layoutY="661.0" prefHeight="63.0" prefWidth="1000.0" promptText="Color" />
     </children>
 </AnchorPane>

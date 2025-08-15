@@ -1,5 +1,6 @@
 package com.shwandashop;
 
+import com.shwandashop.productHandling.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,29 +33,27 @@ public class ProductListController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (productTable.getColumns().isEmpty()) {
-            TableColumn<Product, Integer> idCol = new TableColumn<>("Product ID");
-            idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-            idCol.setPrefWidth(120);
+        TableColumn<Product, Integer> idCol = new TableColumn<>("Product ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("pid"));
+        idCol.setPrefWidth(200);
 
-            TableColumn<Product, String> nameCol = new TableColumn<>("Product Name");
-            nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-            nameCol.setPrefWidth(300);
+        TableColumn<Product, String> nameCol = new TableColumn<>("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameCol.setPrefWidth(400);
 
-            TableColumn<Product, Double> priceCol = new TableColumn<>("Price");
-            priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-            priceCol.setPrefWidth(120);
+        TableColumn<Product, Double> priceCol = new TableColumn<>("Price");
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        priceCol.setPrefWidth(200);
 
-            TableColumn<Product, Integer> quantityCol = new TableColumn<>("Quantity");
-            quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-            quantityCol.setPrefWidth(120);
+        TableColumn<Product, Integer> quantityCol = new TableColumn<>("Quantity");
+        quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        quantityCol.setPrefWidth(200);
 
-            TableColumn<Product, Boolean> onSaleCol = new TableColumn<>("On Sale");
-            onSaleCol.setCellValueFactory(new PropertyValueFactory<>("onSale"));
-            onSaleCol.setPrefWidth(120);
+        TableColumn<Product, String> categoryCol = new TableColumn<>("Category");
+        categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
+        categoryCol.setPrefWidth(200);
 
-            productTable.getColumns().addAll(idCol, nameCol, priceCol, quantityCol, onSaleCol);
-        }
+        productTable.getColumns().setAll(idCol, nameCol, priceCol, quantityCol, categoryCol);
         loadProductsFromDatabase();
     }
 
@@ -73,53 +72,23 @@ public class ProductListController implements Initializable {
 
     private void loadProductsFromDatabase() {
         productList.clear();
-        String url = "jdbc:sqlite:identifier.sqlite";
-        String sql = "SELECT id, name, price, quantity, onSale FROM Stock";
-        System.out.println(sql);
-        try (Connection conn = DriverManager.getConnection(url);
+        String sql = "SELECT p.pid, p.name, p.category, p.color, p.price, IFNULL(s.quantity, 0) as quantity FROM Product p LEFT JOIN Stock s ON p.pid = s.pid";
+        try (Connection conn = DBConnect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
-            System.out.println(rs.toString());
             while (rs.next()) {
                 productList.add(new Product(
-                        rs.getInt("id"),
                         rs.getString("name"),
+                        rs.getInt("pid"),
+                        rs.getString("category"),
+                        rs.getString("color"),
                         rs.getDouble("price"),
-                        rs.getInt("quantity"),
-                        rs.getBoolean("onSale")
+                        rs.getInt("quantity")
                 ));
             }
-
             productTable.setItems(productList);
-            for(Product p : productTable.getItems()){
-                System.out.println("Product ID: " + p.getId() + ", Name: " + p.getName() +
-                        ", Price: " + p.getPrice() + ", Quantity: " + p.getQuantity() +
-                        ", On Sale: " + p.getOnSale());
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public static class Product {
-        private final Integer id;
-        private final String name;
-        private final Double price;
-        private final Integer quantity;
-        private final Boolean onSale;
-
-        public Product(Integer id, String name, Double price, Integer quantity, Boolean onSale) {
-            this.id = id;
-            this.name = name;
-            this.price = price;
-            this.quantity = quantity;
-            this.onSale = onSale;
-        }
-
-        public Integer getId() { return id; }
-        public String getName() { return name; }
-        public Double getPrice() { return price; }
-        public Integer getQuantity() { return quantity; }
-        public Boolean getOnSale() { return onSale; }
     }
 }

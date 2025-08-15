@@ -27,6 +27,10 @@ public class AddProductController {
     @FXML
     private TextField productPrice; // Price
     @FXML
+    private TextField productCategory; // Category
+    @FXML
+    private TextField productColor;
+    @FXML
     private Button addProductButton;
     @FXML
     private Button returnButton;
@@ -38,25 +42,41 @@ public class AddProductController {
     }
 
     private void handleAddProduct(ActionEvent event) {
-        Product p = new Product(productName.getText(), Integer.parseInt(productId.getText()), "", "", Double.parseDouble(productPrice.getText()));
-        String sql = "INSERT INTO Product (id, name, price, category, color) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:identifier.sqlite");
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, p.getPid());
-            pstmt.setString(2, p.getName());
-            pstmt.setInt(3, 0);
-            pstmt.setDouble(4, p.getPrice());
-            pstmt.executeUpdate();
-            System.out.println("Product added successfully!");
-            showAlert("Product added successfully!");
-            // Optionally, redirect to product list
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ProductList.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) addProductButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 1600, 900));
-            stage.setTitle("Product List");
-        } catch (SQLException e) {
+        try {
+            int pid = Integer.parseInt(productId.getText());
+            String name = productName.getText();
+            String category = productCategory.getText();
+            String color = productColor.getText();
+            double price = Double.parseDouble(productPrice.getText());
+            int quantity = Integer.parseInt(productQuantity.getText());
+            Product p = new Product(name, pid, category, color, price, quantity);
+            String sql = "INSERT INTO Product (pid, name, price, category, color) VALUES (?, ?, ?, ?, ?)";
+            try (Connection conn = DBConnect.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, p.getPid());
+                pstmt.setString(2, p.getName());
+                pstmt.setDouble(3, p.getPrice());
+                pstmt.setString(4, p.getCategory());
+                pstmt.setString(5, p.getColor());
+                pstmt.executeUpdate();
+                System.out.println("Product added successfully!");
+                showAlert("Product added successfully!");
+            }
+        catch (SQLException e) {
             showAlert("Database error: " + e.getMessage());
+        }
+            sql = "INSERT INTO Stock (pid, quantity) VALUES (?, ?)";
+            try (Connection conn = DBConnect.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, p.getPid());
+                pstmt.setInt(2, p.getQuantity());
+                pstmt.executeUpdate();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("ProductList.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) addProductButton.getScene().getWindow();
+                stage.setScene(new Scene(root, 1600, 900));
+                stage.setTitle("Product List");
+            }
         } catch (Exception e) {
             showAlert("Error: " + e.getMessage());
         }

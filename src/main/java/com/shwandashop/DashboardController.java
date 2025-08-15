@@ -14,7 +14,15 @@ public class DashboardController {
 
     @FXML
     protected void onCreateOrderClick(ActionEvent event) {
-        // TODO: Implement navigation to CreateOrder.fxml
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateSale.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            stage.setScene(new Scene(root, 1600, 900));
+            stage.setTitle("Create Sale");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
