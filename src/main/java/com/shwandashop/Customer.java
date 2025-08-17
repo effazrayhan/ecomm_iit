@@ -6,6 +6,7 @@ public class Customer {
     private String email;
     private String phone;
     private String address;
+    private int orderCount;
     
     public Customer(int customerId, String name, String email, String phone, String address) {
         this.customerId = customerId;
@@ -13,6 +14,7 @@ public class Customer {
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.orderCount = 0;
     }
     
     public Customer(String name, String email, String phone, String address) {
@@ -20,6 +22,7 @@ public class Customer {
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.orderCount = 0;
     }
     
     // Getters and Setters
@@ -37,4 +40,7 @@ public class Customer {
     
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
+    
+    public int getOrderCount() { return orderCount; }
+    public void setOrderCount(int orderCount) { this.orderCount = orderCount; }
 }

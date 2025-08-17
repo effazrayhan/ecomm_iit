@@ -6,11 +6,47 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DashboardController {
     @FXML
     private Button logoutButton;
+    
+    @FXML
+    private Label totalOrdersLabel;
+
+    @FXML
+    public void initialize() {
+        loadTotalOrders();
+    }
+
+    private void loadTotalOrders() {
+        String sql = "SELECT COUNT(*) as total_orders FROM Orders";
+        
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            
+            if (rs.next()) {
+                int totalOrders = rs.getInt("total_orders");
+                if (totalOrdersLabel != null) {
+                    totalOrdersLabel.setText("Total Orders Handled: " + totalOrders);
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (totalOrdersLabel != null) {
+                totalOrdersLabel.setText("Total Orders Handled: Error loading");
+            }
+        }
+    }
 
     @FXML
     protected void onCreateOrderClick(ActionEvent event) {

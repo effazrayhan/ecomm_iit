@@ -33,7 +33,6 @@ public class LoginController {
         String url = "jdbc:sqlite:identifier.sqlite";
         String sql = "SELECT pass FROM Credentials WHERE eid = ?";
         try (Connection conn = DriverManager.getConnection(url)) {
-            // String hashedPassword = password;
             String storedPassword = null;
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, username);
@@ -42,11 +41,7 @@ public class LoginController {
                     storedPassword = rs.getString("pass");
                 }
             }
-            if (storedPassword != null && storedPassword.equals(password)) {
-                return true;
-            } else {
-                return false;
-            }
+            return storedPassword != null && storedPassword.equals(password);
         } catch (SQLException s) {
             System.out.println("Connection to database failed: " + s.getMessage());
             return false;

@@ -1,30 +1,17 @@
-# TODO: Fix Order Placement and List Views
+# Customer List and Dashboard Enhancement TODO
 
-## Issues to Fix:
-- [ ] Fix CustomerListController - Add proper table columns and data loading
-- [ ] Fix ProductListController - Ensure data loads correctly  
-- [ ] Fix SQL errors in order placement process
-- [ ] Verify database schema completeness
+## Customer List Enhancement
+- [ ] Create CustomerWithOrders model class to include order count
+- [ ] Update CustomerListController to show order counts
+- [ ] Update CustomerList.fxml to add orders column
+- [ ] Update SQL query to include order count per customer
 
-## Implementation Steps:
+## Dashboard Enhancement
+- [ ] Update DashboardController to load and display total orders
+- [ ] Update Dashboard.fxml to add total orders display
+- [ ] Add database query for total orders count
 
-### 1. Fix CustomerListController
-- [ ] Add proper table column definitions
-- [ ] Implement data loading from Customer table
-- [ ] Add observable list and data binding
-
-### 2. Fix ProductListController
-- [ ] Verify SQL query correctness
-- [ ] Ensure proper data binding
-- [ ] Check for any missing imports or dependencies
-
-### 3. Fix SQL Issues
-- [ ] Check CreateSaleController saveCustomerToDatabase method
-- [ ] Verify Orders table exists
-- [ ] Verify Stock table exists
-- [ ] Test customer insertion
-
-### 4. Database Verification
-- [ ] Create missing tables if needed
-- [ ] Test database connectivity
-- [ ] Verify all required SQL files are executed
+## Testing
+- [ ] Verify customer list shows order counts
+- [ ] Verify dashboard displays total orders
+- [ ] Test with sample data
