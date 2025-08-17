@@ -51,7 +51,7 @@ public class CustomerListController {
 
     private void loadCustomers() {
         customerList.clear();
-        String sql = "SELECT customer_id, name, email, phone, address FROM Customer ORDER BY name";
+        String sql = "SELECT id, name, email, phone, address FROM Customer ORDER BY name";
         
         try (Connection conn = DBConnect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -64,7 +64,7 @@ public class CustomerListController {
                     rs.getString("phone"),
                     rs.getString("address")
                 );
-                customer.setCustomerId(rs.getInt("customer_id"));
+                customer.setCustomerId(rs.getInt("id"));
                 customerList.add(customer);
             }
             

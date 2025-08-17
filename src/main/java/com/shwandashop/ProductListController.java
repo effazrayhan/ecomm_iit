@@ -31,29 +31,28 @@ public class ProductListController implements Initializable {
 
     private ObservableList<Product> productList = FXCollections.observableArrayList();
 
+    @FXML
+    private TableColumn<Product, Integer> idCol;
+    
+    @FXML
+    private TableColumn<Product, String> nameCol;
+    
+    @FXML
+    private TableColumn<Product, Double> priceCol;
+    
+    @FXML
+    private TableColumn<Product, Integer> quantityCol;
+    
+    @FXML
+    private TableColumn<Product, String> categoryCol;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        TableColumn<Product, Integer> idCol = new TableColumn<>("Product ID");
         idCol.setCellValueFactory(new PropertyValueFactory<>("pid"));
-        idCol.setPrefWidth(200);
-
-        TableColumn<Product, String> nameCol = new TableColumn<>("Name");
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        nameCol.setPrefWidth(400);
-
-        TableColumn<Product, Double> priceCol = new TableColumn<>("Price");
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-        priceCol.setPrefWidth(200);
-
-        TableColumn<Product, Integer> quantityCol = new TableColumn<>("Quantity");
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        quantityCol.setPrefWidth(200);
-
-        TableColumn<Product, String> categoryCol = new TableColumn<>("Category");
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
-        categoryCol.setPrefWidth(200);
-
-        productTable.getColumns().setAll(idCol, nameCol, priceCol, quantityCol, categoryCol);
         loadProductsFromDatabase();
     }
 

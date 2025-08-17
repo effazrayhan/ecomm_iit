@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900" prefWidth="1600" style="-fx-background-color: #efe7da;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/24.0.1">
+<AnchorPane prefHeight="900" prefWidth="1600" style="-fx-background-color: #efe7da;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/24.0.1" fx:controller="com.shwandashop.CustomerListController">
     <children>
         <Label layoutX="750" layoutY="40" style="-fx-font-size: 32px;" text="Customer List" />
         <TableView fx:id="customerTable" layoutX="200" layoutY="120" prefHeight="700" prefWidth="1200">

@@ -40,7 +40,15 @@ public class DashboardController {
 
     @FXML
     protected void onCustomerListClick(ActionEvent event) {
-        // TODO: Implement navigation to CustomerList.fxml
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomerList.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            stage.setScene(new Scene(root, 1600, 900));
+            stage.setTitle("Customer List");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
