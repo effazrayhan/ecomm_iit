@@ -9,11 +9,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -128,51 +133,112 @@ public class CreateSaleController {
             showAlert("No products selected or order quantity is zero.");
             return;
         }
-        // For demo, using a fixed customer_id. In production, select customer from UI.
-        int customerId = 1;
-        String productsSummary = productList.stream()
-                .filter(p -> p.isSelected() && p.getOrderQuantity() > 0)
-                .map(p -> String.format("%s(x%d)", p.getName(), p.getOrderQuantity()))
-                .reduce((a, b) -> a + ", " + b).orElse("");
-        String datetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        try (Connection conn = DBConnect.getConnection()) {
-            // Insert order into Order table
-            String insertOrder = "INSERT INTO `Order` (customer_id, products, total_price, datetime) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(insertOrder)) {
-                pstmt.setInt(1, customerId);
-                pstmt.setString(2, productsSummary);
-                pstmt.setDouble(3, totalOrderPrice);
-                pstmt.setString(4, datetime);
-                pstmt.executeUpdate();
-            }
-            // Subtract stock for each product
-            for (SaleProduct p : productList) {
-                if (p.isSelected() && p.getOrderQuantity() > 0) {
-                    String updateStock = "UPDATE Stock SET quantity = quantity - ? WHERE pid = ? AND quantity >= ?";
-                    try (PreparedStatement pstmt = conn.prepareStatement(updateStock)) {
-                        pstmt.setInt(1, p.getOrderQuantity());
-                        pstmt.setInt(2, p.getPid());
-                        pstmt.setInt(3, p.getOrderQuantity());
-                        int affected = pstmt.executeUpdate();
-                        if (affected == 0) {
-                            showAlert("Not enough stock for product: " + p.getName());
+        
+        // Create customer popup to collect customer information
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomerInfoPopup.fxml"));
+            Parent root = loader.load();
+            CustomerInfoPopupController controller = loader.getController();
+            
+            Stage stage = new Stage();
+            stage.setTitle("Customer Information");
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.showAndWait();
+            
+            if (controller.isSaved()) {
+                com.shwandashop.Customer customer = controller.getCustomer();
+                
+                // Save customer to database if new
+                int customerId = saveCustomerToDatabase(customer);
+                if (customerId > 0) {
+                    String productsSummary = productList.stream()
+                            .filter(p -> p.isSelected() && p.getOrderQuantity() > 0)
+                            .map(p -> String.format("%s(x%d)", p.getName(), p.getOrderQuantity()))
+                            .reduce((a, b) -> a + ", " + b).orElse("");
+                    String datetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    
+                    try (Connection conn = DBConnect.getConnection()) {
+                        // Insert order into Order table
+                        String insertOrder = "INSERT INTO `Orders` (customer_id, products, total_price, datetime) VALUES (?, ?, ?, ?)";
+                        try (PreparedStatement pstmt = conn.prepareStatement(insertOrder)) {
+                            pstmt.setInt(1, customerId);
+                            pstmt.setString(2, productsSummary);
+                            pstmt.setDouble(3, totalOrderPrice);
+                            pstmt.setString(4, datetime);
+                            pstmt.executeUpdate();
                         }
+                        
+                        // Subtract stock for each product
+                        for (SaleProduct p : productList) {
+                            if (p.isSelected() && p.getOrderQuantity() > 0) {
+                                String updateStock = "UPDATE Stock SET quantity = quantity - ? WHERE pid = ? AND quantity >= ?";
+                                try (PreparedStatement pstmt = conn.prepareStatement(updateStock)) {
+                                    pstmt.setInt(1, p.getOrderQuantity());
+                                    pstmt.setInt(2, p.getPid());
+                                    pstmt.setInt(3, p.getOrderQuantity());
+                                    int affected = pstmt.executeUpdate();
+                                    if (affected == 0) {
+                                        showAlert("Not enough stock for product: " + p.getName());
+                                    }
+                                }
+                            }
+                        }
+                        
+                        showAlert("Order placed successfully!");
+                        loadProducts();
+                        updateTotalPrice();
+                    } catch (SQLException e) {
+                        showAlert("Database error: " + e.getMessage());
                     }
                 }
             }
-        } catch (SQLException e) {
-            showAlert("Database error: " + e.getMessage());
-            return;
+        } catch (Exception e) {
+            showAlert("Error opening customer popup: " + e.getMessage());
         }
-        showAlert("Order placed successfully!");
-        loadProducts();
-        updateTotalPrice();
+    }
+    
+    private int saveCustomerToDatabase(com.shwandashop.Customer customer) {
+        String sql = "INSERT INTO Customer (name, email, phone, address) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, customer.getName());
+            pstmt.setString(2, customer.getEmail());
+            pstmt.setString(3, customer.getPhone());
+            pstmt.setString(4, customer.getAddress());
+            pstmt.executeUpdate();
+            
+            try (java.sql.ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            showAlert("Error saving customer: " + e.getMessage());
+            return -1;
+        }
+        return -1;
     }
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void onReturnToDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+            Parent root = loader.load();
+            
+            Stage stage = (Stage) productTableView.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Dashboard");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static class SaleProduct {
