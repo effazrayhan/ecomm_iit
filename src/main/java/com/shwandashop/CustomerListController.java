@@ -48,7 +48,7 @@ public class CustomerListController {
         ordersCol.setPrefWidth(150);
 
         customerTable.getColumns().setAll(nameCol, emailCol, phoneCol, ordersCol);
-        
+
         // Load customer data
         loadCustomers();
     }
@@ -61,11 +61,11 @@ public class CustomerListController {
                  "LEFT JOIN Orders o ON c.id = o.customer_id " +   // ✅ Fix join condition
                  "GROUP BY c.id, c.name, c.email, c.phone, c.address " +
                  "ORDER BY c.name";
-    
-    try (Connection conn = DBConnect.getConnection();
+
+    try (Connection conn = DatabaseManager.getConnection();
          PreparedStatement pstmt = conn.prepareStatement(sql);
          ResultSet rs = pstmt.executeQuery()) {
-        
+
         while (rs.next()) {
             Customer customer = new Customer(
                 rs.getString("name"),
@@ -77,9 +77,9 @@ public class CustomerListController {
             customer.setOrderCount(rs.getInt("order_count"));
             customerList.add(customer);
         }
-        
+
         customerTable.setItems(customerList);
-        
+
     } catch (SQLException e) {
         e.printStackTrace();
         showAlert("Error loading customers: " + e.getMessage());
@@ -90,11 +90,24 @@ public class CustomerListController {
     @FXML
     private void onReturnToDashboard() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+            SessionManager sessionManager = SessionManager.getInstance();
+            String userRole = sessionManager.getCurrentUserRole();
+
+            FXMLLoader loader;
+            String dashboardTitle;
+
+            if ("admin".equals(userRole)) {
+                loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
+                dashboardTitle = "Admin Dashboard";
+            } else {
+                loader = new FXMLLoader(getClass().getResource("EmployeeDashboard.fxml"));
+                dashboardTitle = "Employee Dashboard";
+            }
+
             Parent root = loader.load();
             Stage stage = (Stage) returnToDashboardButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Dashboard");
+            stage.setTitle(dashboardTitle);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

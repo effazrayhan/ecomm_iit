@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0"
+    xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.shwandashop.SettingsController">
+   <top>
+      <AnchorPane prefHeight="100.0" prefWidth="1600.0" style="-fx-background-color: efe7dd;" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="50.0" layoutY="50.0" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #4b6587;" text="Settings">
+               <font>
+                  <Font name="DejaVuMathTeXGyre-Regular" size="36.0" />
+               </font>
+            </Label>
+            <Button fx:id="backButton" layoutX="1400.0" layoutY="25.0" mnemonicParsing="false" onAction="#onBackClick" text="Back to Dashboard">
+               <font>
+                  <Font name="Droid Sans Fallback" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane prefHeight="700.0" prefWidth="1600.0" style="-fx-background-color: efe7da;" BorderPane.alignment="CENTER">
+         <children>
+            <!-- Current Credentials Section -->
+            <Label layoutX="100.0" layoutY="50.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4b6587;" text="Update Your Credentials" />
+
+            <GridPane layoutX="400.0" layoutY="100.0" prefHeight="200.0" prefWidth="800.0" vgap="20.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="300.0" prefWidth="400.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #4b6587;" text="Current Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <TextField fx:id="currentUsernameField" prefHeight="30.0" prefWidth="300.0" promptText="Enter current username" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                  <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #4b6587;" text="Current Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <PasswordField fx:id="currentPasswordField" prefHeight="30.0" prefWidth="300.0" promptText="Enter current password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                  <Button fx:id="updateUsernameButton" mnemonicParsing="false" onAction="#onUpdateUsernameClick" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4b6587; -fx-text-fill: white;" text="Update Username" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="DejaVuMathTeXGyre-Regular" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </GridPane>
+
+            <!-- Update Password Section -->
+            <GridPane layoutX="400.0" layoutY="300.0" prefHeight="100.0" prefWidth="800.0" vgap="20.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="300.0" prefWidth="400.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button fx:id="updatePasswordButton" mnemonicParsing="false" onAction="#onUpdatePasswordClick" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4b6587; -fx-text-fill: white;" text="Update Password" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <font>
+                        <Font name="DejaVuMathTeXGyre-Regular" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </GridPane>
+
+            <!-- Add User Section -->
+            <Label layoutX="100.0" layoutY="450.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4b6587;" text="Add New User" />
+
+            <GridPane layoutX="400.0" layoutY="500.0" prefHeight="100.0" prefWidth="800.0" vgap="20.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="300.0" prefWidth="400.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button fx:id="addUserButton" mnemonicParsing="false" onAction="#onAddUserClick" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4b6587; -fx-text-fill: white;" text="Add User" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <font>
+                        <Font name="DejaVuMathTeXGyre-Regular" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </GridPane>
+
+            <Label fx:id="statusLabel" layoutX="500.0" layoutY="650.0" prefHeight="50.0" prefWidth="600.0" style="-fx-font-size: 16px; -fx-text-fill: #d32f2f;" text="" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

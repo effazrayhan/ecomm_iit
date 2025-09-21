@@ -8,10 +8,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0"
     xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="com.shwandashop.DashboardController">
+    fx:controller="com.shwandashop.EmployeeController">
    <top>
       <AnchorPane prefHeight="200.0" prefWidth="1600.0" style="-fx-background-color: efe7dd;" BorderPane.alignment="CENTER">
          <children>
@@ -34,32 +33,18 @@
    <center>
       <AnchorPane prefHeight="600.0" prefWidth="1600.0" style="-fx-background-color: efe7da;" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="129.0" layoutY="108.0" mnemonicParsing="false" onAction="#onCreateOrderClick" prefHeight="150.0" prefWidth="320.0" style="-fx-text-fill: 4b6587;" text="Create Order">
+            <Button fx:id="createOrderButton" layoutX="400.0" layoutY="200.0" mnemonicParsing="false" onAction="#onCreateOrderClick" prefHeight="150.0" prefWidth="320.0" style="-fx-text-fill: 4b6587;" text="Create Order">
                <font>
                   <Font name="DejaVuMathTeXGyre-Regular" size="37.0" />
                </font>
             </Button>
-            <Button layoutX="640.0" layoutY="108.0" mnemonicParsing="false" onAction="#onProductListClick" prefHeight="150.0" prefWidth="320.0" text="Product List">
+            <Button fx:id="viewCustomersButton" layoutX="800.0" layoutY="200.0" mnemonicParsing="false" onAction="#onViewCustomersClick" prefHeight="150.0" prefWidth="320.0" text="View Customers">
                <font>
                   <Font name="DejaVuMathTeXGyre-Regular" size="37.0" />
                </font>
             </Button>
-            <Button layoutX="1160.0" layoutY="108.0" mnemonicParsing="false" onAction="#onCustomerListClick" prefHeight="150.0" prefWidth="320.0" text="Customer List">
-               <font>
-                  <Font name="DejaVuMathTeXGyre-Regular" size="37.0" />
-               </font>
-            </Button>
-            <Button layoutX="395.0" layoutY="374.0" mnemonicParsing="false" onAction="#onAddProductClick" prefHeight="150.0" prefWidth="335.0" style="-fx-text-fill: 4b6587;" text="Add Product">
-               <font>
-                  <Font name="DejaVuMathTeXGyre-Regular" size="37.0" />
-               </font>
-            </Button>
-            <Button layoutX="897.0" layoutY="374.0" mnemonicParsing="false" onAction="#onSettingsClick" prefHeight="150.0" prefWidth="339.0" style="-fx-text-fill: 4b6587;" text="Settings">
-               <font>
-                  <Font name="DejaVuMathTeXGyre-Regular" size="37.0" />
-               </font>
-            </Button>
-            <Label fx:id="totalOrdersLabel" layoutX="700.0" layoutY="50.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4b6587;" text="Total Orders Handled: 0" />
+            <Label fx:id="welcomeLabel" layoutX="600.0" layoutY="50.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4b6587;" text="Welcome, Employee" />
+            <Label fx:id="totalOrdersLabel" layoutX="650.0" layoutY="100.0" style="-fx-font-size: 18px; -fx-text-fill: #4b6587;" text="Total Orders Handled: 0" />
          </children>
       </AnchorPane>
    </center>

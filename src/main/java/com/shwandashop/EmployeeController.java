@@ -12,41 +12,61 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-public class DashboardController {
-    @FXML
-    private ListView<String> alertListView;
-
-    private AlertManager alertManager;
-
+public class EmployeeController {
     @FXML
     private Button logoutButton;
-
+    @FXML
+    private Button createOrderButton;
+    @FXML
+    private Button viewCustomersButton;
+    @FXML
+    private Label welcomeLabel;
     @FXML
     private Label totalOrdersLabel;
 
-    @FXML
-    public void initialize() {
+    private String currentUserEid;
+
+    public void setCurrentUserEid(String eid) {
+        this.currentUserEid = eid;
+        loadEmployeeInfo();
         loadTotalOrders();
+    }
 
-        alertManager = AlertManager.getInstance();
-        alertManager.startBackgroundService();
-
-        // For demonstration, update alertListView periodically
-        new Thread(() -> {
-            while (true) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    break;
+    private void loadEmployeeInfo() {
+        if (currentUserEid != null && welcomeLabel != null) {
+            String sql = "SELECT name FROM Employee WHERE eid = ?";
+            try (Connection conn = DBConnect.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, currentUserEid);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    String name = rs.getString("name");
+                    welcomeLabel.setText("Welcome, " + name + " (Employee)");
                 }
-                javafx.application.Platform.runLater(() -> {
-                    alertListView.getItems().add("Sample alert at " + java.time.LocalTime.now());
-                });
+            } catch (SQLException e) {
+                e.printStackTrace();
+                welcomeLabel.setText("Welcome, Employee");
             }
-        }).start();
+        }
+    }
+
+    private String getCurrentUserName() {
+        if (currentUserEid != null) {
+            String sql = "SELECT name FROM Employee WHERE eid = ?";
+            try (Connection conn = DBConnect.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, currentUserEid);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getString("name");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return currentUserEid; // Fallback to eid if name not found
     }
 
     private void loadTotalOrders() {
@@ -76,7 +96,7 @@ public class DashboardController {
         try {
             // Set session information for the CreateSale controller
             SessionManager sessionManager = SessionManager.getInstance();
-            sessionManager.setCurrentUser("admin", "admin", "Administrator");
+            sessionManager.setCurrentUser(currentUserEid, "employee", getCurrentUserName());
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateSale.fxml"));
             Parent root = loader.load();
@@ -89,24 +109,11 @@ public class DashboardController {
     }
 
     @FXML
-    protected void onProductListClick(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ProductList.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 1600, 900));
-            stage.setTitle("Product List");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    protected void onCustomerListClick(ActionEvent event) {
+    protected void onViewCustomersClick(ActionEvent event) {
         try {
             // Set session information for the CustomerList controller
             SessionManager sessionManager = SessionManager.getInstance();
-            sessionManager.setCurrentUser("admin", "admin", "Administrator");
+            sessionManager.setCurrentUser(currentUserEid, "employee", getCurrentUserName());
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomerList.fxml"));
             Parent root = loader.load();
@@ -123,26 +130,13 @@ public class DashboardController {
         try {
             // Set session information for the AddProduct controller
             SessionManager sessionManager = SessionManager.getInstance();
-            sessionManager.setCurrentUser("admin", "admin", "Administrator");
+            sessionManager.setCurrentUser(currentUserEid, "employee", getCurrentUserName());
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("AddProduct.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) logoutButton.getScene().getWindow();
             stage.setScene(new Scene(root, 1600, 900));
             stage.setTitle("Add Product");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    protected void onSettingsClick(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Settings.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 1600, 900));
-            stage.setTitle("Settings");
         } catch (Exception e) {
             e.printStackTrace();
         }
