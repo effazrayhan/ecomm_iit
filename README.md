@@ -1,4 +1,95 @@
-{
-  "name": "ECOMM_IIT",
-  "content": "# ecomm\n\n> A simple e-commerce desktop application built with **JavaFX** and **Maven**.\n\n---\n\n## About\n\n**ecomm** is a basic e-commerce desktop application.  \nIt allows users to browse products, add them to a shopping cart, and place orders. Admins can manage inventory and orders through a simple interface.\n\n---\n\n## Features\n\n- User login & registration  \n- Product catalog (list, search, filter)  \n- Shopping cart  \n- Checkout process  \n- Order management  \n- Admin dashboard for products & orders  \n\n---\n\n## Tech Stack\n\n- **Language**: Java  \n- **UI Framework**: JavaFX  \n- **Build Tool**: Maven  \n- **Database**: SQLite  \n\n---\n\n## Getting Started\n\n### Prerequisites\n\n- Java 17+  \n- Maven 3.8+  \n- Git  \n\n### Installation\n\n```bash\ngit clone https://github.com/effazrayhan/ecomm_iit.git\ncd ecomm_iit\nmvn clean install\n```\n\n### Running\n\n```bash\nmvn clean javafx:run\n```\n\n---\n\n## Project Structure\n\n```\necomm/\n├── src/\n│   └── main/\n│       ├── java/        # Source code\n│       └── resources/   # Config & static files\n├── pom.xml\n└── README.md\n```\n\n---\n\n## Contributing\n\nContributions are welcome!  \n\n1. Fork the repo  \n2. Create a branch (`git checkout -b feature/my-feature`)  \n3. Commit your changes  \n4. Push to your fork  \n5. Open a pull request  \n\n---\n\n## License\n\nThis project is licensed under the [MIT License](LICENSE).  \n\n---\n\n## Contact\n\n- GitHub: [effazrayhan](https://github.com/effazrayhan)  \n"
-}
+
+# ecomm
+
+> A simple e-commerce desktop application built with **JavaFX** and **Maven**.
+
+---
+
+## About
+
+**ecomm** is a basic e-commerce desktop application.  
+It allows users to browse products, add them to a shopping cart, and place orders. Admins can manage inventory and orders through a simple interface.
+
+---
+
+## Features
+
+- User login & registration  
+- Product catalog (list, search, filter)  
+- Shopping cart  
+- Checkout process  
+- Order management  
+- Admin dashboard for products & orders  
+
+---
+
+## Tech Stack
+
+- **Language**: Java  
+- **UI Framework**: JavaFX  
+- **Build Tool**: Maven  
+- **Database**: SQLite  
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Java 17+  
+- Maven 3.8+  
+- Git  
+
+### Installation
+
+```bash
+git clone https://github.com/effazrayhan/ecomm_iit.git
+cd ecomm_iit
+mvn clean install
+````
+
+### Running
+
+```bash
+mvn clean javafx:run
+```
+
+---
+
+## Project Structure
+
+```
+ecomm/
+├── src/
+│   └── main/
+│       ├── java/        # Source code
+│       └── resources/   # Config & static files
+├── pom.xml
+└── README.md
+```
+
+---
+
+## Contributing
+
+Contributions are welcome!
+
+1. Fork the repo
+2. Create a branch (`git checkout -b feature/my-feature`)
+3. Commit your changes
+4. Push to your fork
+5. Open a pull request
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## Contact
+
+* GitHub: [effazrayhan](https://github.com/effazrayhan)
+
+```
